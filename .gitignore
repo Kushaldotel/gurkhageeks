@@ -1,0 +1,22 @@
+# Ignore system files
+*.pyc
+__pycache__/
+*.sqlite3
+
+# Ignore environment files
+.env
+.venv
+.env.local
+venv/
+
+# Ignore IDE and text editor files
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+
+# Ignore development and runtime directories
+/media/
+/static/
+__pycache__/
