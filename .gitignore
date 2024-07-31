@@ -20,3 +20,7 @@ venv/
 /media/
 /static/
 __pycache__/
+
+
+# Ignore the settings.py
+settings.py
