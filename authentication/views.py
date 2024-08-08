@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .serializers import UserRegistrationSerializer
+from .serializers import UserRegistrationSerializer, ProfileSerializer
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from rest_framework.parsers import MultiPartParser
 from django.contrib.auth.tokens import default_token_generator
@@ -19,6 +19,7 @@ from rest_framework.decorators import api_view, permission_classes
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
 User=get_user_model()
 class RegisterView(APIView):
     def post(self, request):
@@ -99,3 +100,8 @@ class LogoutView(APIView):
                 {"error": "Something went wrong"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+class ProfileView(APIView):
+    permission_classes= [IsAuthenticated]
+    def get(self,request):
+        serializer= ProfileSerializer(request.user)
+        return Response(serializer.data)
