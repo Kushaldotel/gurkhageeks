@@ -32,8 +32,10 @@ class RegisterView(APIView):
 
             if settings.DEBUG:
                 conformation_link= f"http://localhost:3000/auth/confirm/{uid}/{token}/"
+            else:
+                conformation_link=f"https://gorkhageeks-backend.onrender.com/auth/confirm/{uid}/{token}/"
             
-            subject= "Conform your registration"
+            subject= "Confirm your registration"
             html_message= render_to_string("blog/confirmation_email.html",{'confirmation_link':conformation_link})
             plain_message= strip_tags(html_message)
             from_email= settings.EMAIL_HOST_USER
