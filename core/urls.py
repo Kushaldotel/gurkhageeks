@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import PostsViewset,CategoriesView,Recentpostsview, Postcomment,PostLikeDislikeView,Mostlikedpost,Latestpostview
+from .views import PostsViewset,CategoriesView,Recentpostsview, Postcomment,PostLikeDislikeView,Mostlikedpost,Latestpostview,WeekelyPost
 from rest_framework.routers import DefaultRouter
 router= DefaultRouter()
 router.register('', PostsViewset)
@@ -12,5 +12,6 @@ urlpatterns = [
     path("postlike/<int:pk>/",PostLikeDislikeView.as_view(), name="postlikedislike"),
     path("mostlikedpost/",Mostlikedpost.as_view(), name="mostlikedpost"),
     path("latestposts/",Latestpostview.as_view(),name="latestposts"),
+    path("postthisweek/",WeekelyPost.as_view(), name= "thisweekpost"),
     path('', include(router.urls)),
 ]
