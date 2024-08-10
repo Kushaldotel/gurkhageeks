@@ -31,3 +31,16 @@ class PostComments(models.Model):
 
     def __str__(self):
         return f"{self.comment} by {self.author}"
+
+class Postinteraction(models.Model):
+    post= models.ForeignKey(Post, on_delete=models.CASCADE)
+    liked= models.BooleanField(default=False)
+    disliked= models.BooleanField(default=False)
+    liked_disliked_by= models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at= models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return repr(self.post.title)
+
+
+
