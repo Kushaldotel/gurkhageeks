@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post,Categories
+from .models import Post,Categories,PostComments
 
 User = get_user_model()
 
@@ -27,3 +27,14 @@ class PostSerializerread(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'title', 'content', 'author', 'tags', 'categories', 'created_at', 'updated_at']
+
+class CommentSerializer(serializers.ModelSerializer):
+    author=UserSerializer(read_only=True)
+    class Meta:
+        model = PostComments
+        fields = '__all__'
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostComments
+        fields = '__all__'
