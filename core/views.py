@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from .serializers import PostSerializer,PostSerializerread,categorySerializer, CommentSerializer,CommentCreateSerializer
-from .models import Post,Categories,PostComments
+from .serializers import PostSerializer,PostSerializerread,categorySerializer, CommentSerializer,CommentCreateSerializer,postlikedislike
+from .models import Post,Categories,PostComments,Postinteraction
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -93,4 +93,41 @@ class Postcomment(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PostLikeDislikeView(APIView):
+
+    def get_permissions(self):
+        if self.request.method in ['POST']:
+            return [IsAuthenticated()]
+        return [AllowAny()]
+    def get(self,request, pk):
+        post=Post.objects.get(id=pk)
+        postinteraction= Postinteraction.objects.filter(post=post.id)
+        total_like= postinteraction.filter(liked=True).count()
+        total_dislike= postinteraction.filter(disliked=True).count()
+        serializer= postlikedislike(postinteraction,many=True)
+        data={
+            'total_like':total_like,
+            'total_dislike':total_dislike,
+            'data':serializer.data
+        }
+        return Response(data)
+
+    def post(self, request, pk):
+        post= Post.objects.get(id=pk)
+        post_interaction, created= Postinteraction.objects.get_or_create(post=post, liked_disliked_by=request.user)
+        data = request.data
         
+        # Validate the input
+        if 'liked' not in data and 'disliked' not in data:
+            return Response({"error": "No like or dislike value provided."}, status=400)
+
+        if data.get('liked') is not None:
+            post_interaction.liked = data['liked']
+            post_interaction.disliked = False if data['liked'] else post_interaction.disliked
+        elif data.get('disliked') is not None:
+            post_interaction.disliked = data['disliked']
+            post_interaction.liked = False if data['disliked'] else post_interaction.liked
+        
+        post_interaction.save()
+
+        return Response({"liked": post_interaction.liked, "disliked": post_interaction.disliked})
