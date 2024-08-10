@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from rest_framework import status
+from django.db.models import Count
+from django.db import models
 
 # Create your views here.
 class PostsViewset(ModelViewSet):
@@ -131,3 +133,16 @@ class PostLikeDislikeView(APIView):
         post_interaction.save()
 
         return Response({"liked": post_interaction.liked, "disliked": post_interaction.disliked})
+
+
+class Mostlikedpost(APIView):
+    def get(self, request):
+        posts = Post.objects.annotate(likes_count=Count('postinteraction', filter=models.Q(postinteraction__liked=True))).order_by('-likes_count')
+        serializer= PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
+class Latestpostview(APIView):
+    def get(self, request):
+        post=Post.objects.all().order_by("-created_at")
+        serializer= PostSerializer(post, many=True)
+        return Response(serializer.data)
