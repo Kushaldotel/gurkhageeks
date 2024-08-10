@@ -9,6 +9,8 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework import status
 from django.db.models import Count
 from django.db import models
+from .utils import start_and_end_days_of_week
+
 
 # Create your views here.
 class PostsViewset(ModelViewSet):
@@ -146,3 +148,11 @@ class Latestpostview(APIView):
         post=Post.objects.all().order_by("-created_at")
         serializer= PostSerializer(post, many=True)
         return Response(serializer.data)
+
+class WeekelyPost(APIView):
+    def get(self, request):
+        start_of_week, end_of_week= start_and_end_days_of_week()
+        post= Post.objects.filter(created_at__range=(start_of_week, end_of_week))
+        serializer= PostSerializer(post, many=True)
+        return Response(serializer.data)
+
