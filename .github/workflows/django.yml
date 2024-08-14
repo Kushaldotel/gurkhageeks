@@ -1,0 +1,32 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Update this if you are using a different branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.DEV_SERVER }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@54.86.21.254 << 'EOF'
+            source venv/bin/activate
+            cd /home/ubuntu/gurkhageeks
+            git stash save "settings.py"
+            git pull origin development
+            git stash pop
+            pip install -r requirements.txt
+            python manage.py migrate
+            sudo systemctl restart supervisor
+          EOF
