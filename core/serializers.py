@@ -26,7 +26,7 @@ class PostSerializerread(serializers.ModelSerializer):
     categories=categorySerializer(read_only=True,many=True)
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author', 'tags', 'categories', 'created_at', 'updated_at']
+        fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):
     author=UserSerializer(read_only=True)
