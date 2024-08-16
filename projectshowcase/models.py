@@ -17,3 +17,10 @@ class projectshowcase(models.Model):
 
     def __str__(self):
         return self.name
+
+class ProjectShowcaseImage(models.Model):
+    project_showcase= models.ForeignKey(projectshowcase, on_delete=models.CASCADE, related_name="images")
+    image= models.ImageField(upload_to="projectshowcase", blank=False, null=True)
+
+    def __str__(self):
+        return self.project_showcase.name
