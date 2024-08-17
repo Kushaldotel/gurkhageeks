@@ -43,11 +43,17 @@ class CategoriesView(APIView):
 
 
 
-class Recentpostsview(APIView):
-    def get(self, request):
-        posts= Post.objects.all().order_by("-created_at")
-        serializer= PostSerializer(posts, many=True)
-        return Response(serializer.data)
+# class Recentpostsview(APIView):
+#     def get(self, request):
+#         posts= Post.objects.all().order_by("-created_at")
+#         serializer= PostSerializerread(posts, many=True)
+#         return Response(serializer.data)
+
+
+
+class Recentpostsview(ReadOnlyModelViewSet):
+    serializer_class = PostSerializerread
+    queryset = Post.objects.all().order_by("-created_at")
         
 class Postcomment(APIView):
 
