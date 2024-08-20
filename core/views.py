@@ -22,7 +22,7 @@ class PostsViewset(ModelViewSet):
         queryset = Post.objects.all()
         categories= self.request.query_params.get('categories', None)
         if categories is not None:
-            queryset = queryset.filter(categories__name=categories)
+            queryset = queryset.filter(categories__id=categories)
         return queryset
 
     def get_serializer_class(self):
@@ -43,11 +43,17 @@ class CategoriesView(APIView):
 
 
 
-class Recentpostsview(APIView):
-    def get(self, request):
-        posts= Post.objects.all().order_by("-created_at")
-        serializer= PostSerializer(posts, many=True)
-        return Response(serializer.data)
+# class Recentpostsview(APIView):
+#     def get(self, request):
+#         posts= Post.objects.all().order_by("-created_at")
+#         serializer= PostSerializerread(posts, many=True)
+#         return Response(serializer.data)
+
+
+
+class Recentpostsview(ReadOnlyModelViewSet):
+    serializer_class = PostSerializerread
+    queryset = Post.objects.all().order_by("-created_at")
         
 class Postcomment(APIView):
 
