@@ -41,12 +41,15 @@ class RegisterView(APIView):
             plain_message= strip_tags(html_message)
             from_email= settings.EMAIL_HOST_USER
             to_email= user.email
-
-            send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
-            response_data = {
-            "message": "Registration email sent for confirmation"
-                }
-            return Response({'status': response_data}, status=status.HTTP_201_CREATED)
+            try:
+                send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+                response_data = {
+                "message": "Registration email sent for confirmation"
+                    }
+                return Response({'status': response_data}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET"])
