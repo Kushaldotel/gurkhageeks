@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, TermsandServices
 from django.contrib.auth import get_user_model
 User=get_user_model()
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -20,8 +20,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             website=validated_data.get('website', '')
         )
         return user
-    
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id','email','first_name', 'last_name', 'profile_pic', 'bio', 'website']
+
+class TermsandServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TermsandServices
+        fields = ['terms',]
