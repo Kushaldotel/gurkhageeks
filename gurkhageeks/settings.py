@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'contacts',
     'core',
     'projectshowcase',
-    'quiz'
+    'quiz',
+    'utils',
 ]
 
 
@@ -172,6 +173,9 @@ REST_FRAMEWORK = {
    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
    ),
+   'DEFAULT_RENDERER_CLASSES': (
+       'utils.renderer_utils.CustomRenderer',
+   )
 }
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),
