@@ -49,24 +49,6 @@ To set up the project locally, follow these steps:
     python manage.py runserver
 
 
-### Frontend Setup (React)
-
-1. **Navigate to the frontend directory**
-
-    ```bash
-    cd ../frontend
-
-2. **Install dependencies**
-    
-    ```bash
-    npm install
-
-3. **Start the development server**
-
-    ```bash
-    npm run dev
-
-
 ### Usage
 Once the project is set up, you can start contributing to either the frontend or backend. The backend server will run on http://localhost:8000/, and the frontend server will run on http://localhost:5173/. The backend API endpoints will be accessible via the Django REST Framework interface.
 
