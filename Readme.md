@@ -7,7 +7,6 @@ Gurkha Geeks is an open-source project aimed at bringing together all tech enthu
 - [About the Project](#about-the-project)
 - [Installation](#installation)
   - [Backend Setup (Django REST Framework)](#backend-setup-django-rest-framework)
-  - [Frontend Setup (React)](#frontend-setup-react)
 - [Usage](#usage)
 - [Contributing](#contributing)
 
@@ -50,7 +49,7 @@ To set up the project locally, follow these steps:
 
 
 ### Usage
-Once the project is set up, you can start contributing to either the frontend or backend. The backend server will run on http://localhost:8000/, and the frontend server will run on http://localhost:5173/. The backend API endpoints will be accessible via the Django REST Framework interface.
+Once the project is set up, you can start contributing to either the frontend or backend. The backend server will run on http://localhost:8000/. The backend API endpoints will be accessible via the Django REST Framework interface.
 
 
 ### Contributing
