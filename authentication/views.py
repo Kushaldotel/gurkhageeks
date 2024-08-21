@@ -4,11 +4,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .serializers import UserRegistrationSerializer, ProfileSerializer
+from .serializers import UserRegistrationSerializer, ProfileSerializer, TermsandServicesSerializer
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from rest_framework.parsers import MultiPartParser
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode 
+from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -20,6 +20,9 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView
+from .models import TermsandServices
+
 User=get_user_model()
 class RegisterView(APIView):
     def post(self, request):
@@ -35,7 +38,7 @@ class RegisterView(APIView):
                 conformation_link= f"http://localhost:3000/auth/confirm/{uid}/{token}/"
             else:
                 conformation_link=f"https://gorkhageeks-backend.onrender.com/auth/confirm/{uid}/{token}/"
-            
+
             subject= "Confirm your registration"
             html_message= render_to_string("blog/confirmation_email.html",{'confirmation_link':conformation_link})
             plain_message= strip_tags(html_message)
@@ -49,7 +52,7 @@ class RegisterView(APIView):
                 return Response({'status': response_data}, status=status.HTTP_201_CREATED)
             except Exception as e:
                 return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET"])
@@ -97,7 +100,7 @@ class LogoutView(APIView):
                 {"error": "Refresh token not provided"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-            
+
         except Exception:
             return Response(
                 {"error": "Something went wrong"},
@@ -108,3 +111,7 @@ class ProfileView(APIView):
     def get(self,request):
         serializer= ProfileSerializer(request.user)
         return Response(serializer.data)
+
+class TermsandServicesView(ListAPIView):
+    queryset= TermsandServices.objects.all()
+    serializer_class= TermsandServicesSerializer
