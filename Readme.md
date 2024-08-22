@@ -23,7 +23,7 @@ Gurkha Geeks is an open-source project aimed at bringing together all tech enthu
 
 Gurkha Geeks is designed to be a collaborative platform where tech enthusiasts of Nepal can contribute, learn, and grow together. Whether you're a developer, designer, or just someone interested in tech, you're welcome to contribute to this repository. The project is built with Django REST Framework for the backend and React for the frontend, making it a versatile and scalable application.
 
-## Tech Stack ##
+## Tech Stack 
 [![Django][Django]][Django-url] 
 [![DRF][DRF]][DRF-url] 
 [![React][React.js]][React-url] 
