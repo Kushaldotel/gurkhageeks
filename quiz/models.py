@@ -8,12 +8,12 @@ class categories(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class Quiz(models.Model):
     name= models.CharField(max_length=100)
     description= models.TextField()
-    categories= models.ForeignKey(categories, verbose_name=("categories of quiz"), on_delete=models.CASCADE)
+    category= models.ForeignKey(categories, verbose_name=("categories of quiz"), on_delete=models.CASCADE)
     created= models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -26,7 +26,7 @@ class Question(models.Model):
 
     def __str__(self):
         return self.text
-    
+
 class Answer(models.Model):
     question=models.ForeignKey(Question, on_delete=models.CASCADE)
     text= models.TextField()
