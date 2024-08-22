@@ -20,4 +20,4 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@54.86.21.254 << '/home/ubuntu/deploy.sh'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << '/home/ubuntu/deploy.sh'
