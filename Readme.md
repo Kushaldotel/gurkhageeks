@@ -4,7 +4,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![Discord][discord-shield]][discord-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 # Gurkha Geeks
 
