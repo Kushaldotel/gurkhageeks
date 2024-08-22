@@ -10,14 +10,14 @@ Fork the repository by clicking the "Fork" button on the top right of the reposi
 ### 2. Clone Your Fork
 Clone the forked repository to your local machine. Replace `your-username` with your GitHub username.
 
-        <!-- ```bash -->
+
         git clone https://github.com/your-username/gurkhageeks.git
 
 
 ### 3. Create a New Branch
 Create a new branch for your feature or bug fix. Use a descriptive name for the branch.
     
-        ```bash
+
         git checkout -b feature/amazing-feature
 
 ### 4. Make Your Changes
@@ -33,7 +33,7 @@ Example Commit Messages:
 feat: add user authentication
 fix: resolve issue with login form validation
 
-    <!-- ```bash -->
+
     git add .
     git commit -m "feat: add amazing feature"
 
@@ -41,7 +41,7 @@ fix: resolve issue with login form validation
 ### 6. Push Your Changes
 Push the changes to your forked repository.
 
-    <!-- ```bash -->
+
     git push origin feature/amazing-feature
 
 ### 7. Submit a Pull Request
