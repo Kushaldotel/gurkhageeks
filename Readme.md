@@ -13,6 +13,7 @@ Gurkha Geeks is an open-source project aimed at bringing together all tech enthu
 ## Table of Contents
 
 - [About the Project](#about-the-project)
+- [Tech Stack](#teach-stack)
 - [Installation](#installation)
   - [Backend Setup (Django REST Framework)](#backend-setup-django-rest-framework)
 - [Usage](#usage)
@@ -21,6 +22,12 @@ Gurkha Geeks is an open-source project aimed at bringing together all tech enthu
 ## About the Project
 
 Gurkha Geeks is designed to be a collaborative platform where tech enthusiasts of Nepal can contribute, learn, and grow together. Whether you're a developer, designer, or just someone interested in tech, you're welcome to contribute to this repository. The project is built with Django REST Framework for the backend and React for the frontend, making it a versatile and scalable application.
+
+## Tech Stack ##
+[![Django][Django]][Django-url] 
+[![DRF][DRF]][DRF-url] 
+[![React][React.js]][React-url] 
+[![PostgreSQL][PostgreSQL]][Postgresql-url]
 
 ## Installation
 
@@ -87,5 +94,12 @@ To contribute:
 [license-url]: https://github.com/Kushaldotel/gurkhageeks/blob/main/LICENSE
 [discord-shield]: https://img.shields.io/discord/your_discord_server_id.svg?style=for-the-badge
 [discord-url]: https://discord.gg/CVNrjK3gpB
-
+[Django]: https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white
+[Django-url]: https://www.djangoproject.com/
+[DRF]: https://img.shields.io/badge/DRF-092E20?style=for-the-badge&logo=django&logoColor=red
+[DRF-url]: https://www.django-rest-framework.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[PostgreSQL]: https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white
+[Postgresql-url]: https://www.postgresql.org/
 
