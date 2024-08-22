@@ -89,6 +89,7 @@ For detailed guidelines on how to contribute, please refer to our [Contribution 
     <tr>
       <td align="center" valign="top" width="14.28%">
         <a href="https://github.com/kushaldotel"><img src="https://avatars.githubusercontent.com/u/114340617?v=4" width="100px;" alt="Kushal"/><br /><sub><b>Kushal</b></sub></a><br />
+        <a href="#" title="Maintenance">🔧</a>
         <a href="#" title="Project Management">📆</a>
         <a href="#" title="Code">💻</a>
         <a href="#" title="Reviewed Pull Requests">👀</a>
@@ -96,6 +97,7 @@ For detailed guidelines on how to contribute, please refer to our [Contribution 
       </td>
       <td align="center" valign="top" width="14.28%">
         <a href="https://github.com/pawansapkota100"><img src="https://avatars.githubusercontent.com/u/100679210?s=96&v=4" width="100px;" alt="Pawan"/><br /><sub><b>Pawan</b></sub></a><br />
+        <a href="#" title="Maintenance">🔧</a>
         <a href="#" title="Documentation">📖</a>
         <a href="#" title="Code">💻</a>
         <a href="#" title="Content">🖋</a>
