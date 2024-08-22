@@ -69,12 +69,6 @@ Link to the related issue (e.g., #123).
 ## Motivation and Context
 Why is this change required? What problem does it solve?
 
-## How Has This Been Tested?
-Describe the tests that you ran to verify your changes. Include any relevant details for your testing setup.
-
-- [ ] Test A
-- [ ] Test B
-
 ## Screenshots (if appropriate):
 
 ## Types of Changes
