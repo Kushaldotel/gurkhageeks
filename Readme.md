@@ -1,3 +1,11 @@
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![Discord][discord-shield]][discord-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
 # Gurkha Geeks
 
 Gurkha Geeks is an open-source project aimed at bringing together all tech enthusiasts from Nepal. This platform allows developers, designers, and other tech-minded individuals to collaborate on various projects, share knowledge, and contribute to the growing tech community in Nepal.
@@ -66,5 +74,17 @@ To contribute:
 
 
 
+[contributors-shield]: https://img.shields.io/github/contributors/Kushaldotel/gurkhageeks.svg?style=for-the-badge
+[contributors-url]: https://github.com/Kushaldotel/gurkhageeks/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Kushaldotel/gurkhageeks.svg?style=for-the-badge
+[forks-url]: https://github.com/Kushaldotel/gurkhageeks/network/members
+[stars-shield]: https://img.shields.io/github/stars/Kushaldotel/gurkhageeks.svg?style=for-the-badge
+[stars-url]: https://github.com/Kushaldotel/gurkhageeks/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Kushaldotel/repo_name.svg?style=for-the-badge
+[issues-url]: https://github.com/Kushaldotel/repo_name/issues
+[license-shield]: https://img.shields.io/github/license/Kushaldotel/repo_name.svg?style=for-the-badge
+[license-url]: https://github.com/Kushaldotel/repo_name/blob/master/LICENSE.txt
+[discord-shield]: https://img.shields.io/discord/your_discord_server_id.svg?style=for-the-badge
+[discord-url]: https://discord.gg/CVNrjK3gpB
 
 
