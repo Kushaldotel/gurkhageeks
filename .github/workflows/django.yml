@@ -20,13 +20,4 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@54.86.21.254 << 'EOF'
-            source venv/bin/activate
-            cd /home/ubuntu/gurkhageeks
-            git stash save "settings.py"
-            git pull origin development
-            git stash pop
-            pip install -r requirements.txt
-            python manage.py migrate
-            sudo systemctl restart supervisor
-          EOF
+          ssh -o StrictHostKeyChecking=no ubuntu@54.86.21.254 << '/home/ubuntu/deploy.sh'
