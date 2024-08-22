@@ -68,16 +68,19 @@ Once the project is set up, you can start contributing to either the frontend or
 
 
 ### Contributing
+
 We welcome contributions from all tech enthusiasts! Whether you're a seasoned developer or just starting, your contributions are valuable.
 
-To contribute:
+For detailed guidelines on how to contribute, please refer to our [Contribution Guidelines](CONTRIBUTING.md).
+
+### Quick Overview
 
 1. Fork the repository.
-2. Create a new branch (git checkout -b feature/your-feature-name).
-3. Make your changes and commit them (git commit -m 'Add some feature').
-4. Push to the branch (git push origin feature/your-feature-name).
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature-name`).
 5. Open a Pull Request.
-6. Please ensure that your contributions adhere to our Code of Conduct.
+6. Ensure that your contributions adhere to our Code of Conduct.
 
 
 
