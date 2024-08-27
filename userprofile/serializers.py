@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from core.models import Post
-from projectshowcase.models import projectshowcase
+from projectshowcase.models import projectshowcase, ProjectShowcaseImage
 from rest_framework.reverse import reverse
+
 User=get_user_model()
 
 
@@ -40,17 +41,19 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_project_showcase(self, obj):
         request = self.context.get('request')  # Get the request object from the context
-        project_showcases = projectshowcase.objects.filter(user=obj).values('id', 'name', 'created_at')
-        # Construct full URLs for each project showcase
-        project_showcase_list = [
-            {
-                'id': showcase['id'],
-                'name': showcase['name'],
-                'created_at': showcase['created_at'],
-                'url': request.build_absolute_uri(reverse('projectshowcase-detail', kwargs={'pk': showcase['id']}))  # Adjust 'projectshowcase-detail' to your actual URL name
-            }
-            for showcase in project_showcases
-        ]
+        project_showcases = projectshowcase.objects.filter(user=obj)
+        project_showcase_list = []
+        for showcase in project_showcases:
+            # Get the first image related to the project showcase, if any
+            image = ProjectShowcaseImage.objects.filter(project_showcase=showcase).first()
+            thumbnail_url = request.build_absolute_uri(image.image.url) if image and image.image else None
+            project_showcase_list.append({
+                'id': showcase.id,
+                'name': showcase.name,
+                'created_at': showcase.created_at,
+                'thumbnail': thumbnail_url,
+                'url': request.build_absolute_uri(reverse('projectshowcase-detail', kwargs={'pk': showcase.id}))  # Adjust 'projectshowcase-detail' to your actual URL name
+            })
         return project_showcase_list
 
 class UserUpdateSerailizer(serializers.ModelSerializer):
