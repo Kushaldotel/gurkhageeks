@@ -54,6 +54,7 @@ INSTALLED_APPS += [
         'projectshowcase',
         'quiz',
         'utils',
+        'userprofile',
     ]
 
 MIDDLEWARE = [

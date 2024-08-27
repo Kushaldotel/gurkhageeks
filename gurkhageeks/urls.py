@@ -26,5 +26,6 @@ urlpatterns = [
     path("blog/", include("core.urls")),
     path('contacts/', include("contacts.urls")),
     path('projectshowcase/', include("projectshowcase.urls")),
-    path('quiz/', include("quiz.urls"))
+    path('quiz/', include("quiz.urls")),
+    path('accounts/', include('userprofile.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
