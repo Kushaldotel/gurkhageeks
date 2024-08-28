@@ -20,12 +20,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-urlpatterns = [
-    path('secretadmin/', admin.site.urls),
+api_patterns = [
     path("auth/", include("authentication.urls")),
     path("blog/", include("core.urls")),
     path('contacts/', include("contacts.urls")),
     path('projectshowcase/', include("projectshowcase.urls")),
     path('quiz/', include("quiz.urls")),
     path('accounts/', include('userprofile.urls')),
+]
+
+urlpatterns = [
+    path('secretadmin/', admin.site.urls),
+    path('api/v1/', include(api_patterns)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
