@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import Group, Permission
-
+from .constants import USER_TYPE_CHOICES
 
 class CustomUserManager(BaseUserManager):
 
@@ -38,6 +38,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(max_length=500, blank=True)
     website = models.URLField(max_length=200, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='developer')
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 

@@ -65,6 +65,7 @@ def confirm_registration(request, uidb64, token):
         user = User.objects.get(pk=uid)
         if default_token_generator.check_token(user, token):
             user.is_active = True
+            user.user_type = 'developer'
             user.save()
             return Response({"message": "Registration successful"})
         else:
