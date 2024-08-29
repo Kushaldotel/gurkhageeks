@@ -27,6 +27,7 @@ api_patterns = [
     path('projectshowcase/', include("projectshowcase.urls")),
     path('quiz/', include("quiz.urls")),
     path('accounts/', include('userprofile.urls')),
+    path('roadmaps/', include('roadmaps.urls')),
 ]
 
 urlpatterns = [
