@@ -5,7 +5,7 @@ user= get_user_model()
 # Create your models here.
 
 class projectshowcase(models.Model):
-    name=models.CharField(max_length=100)
+    name=models.CharField(max_length=100, verbose_name="name of project")
     type_of_project= models.CharField(max_length=100, verbose_name="Type of Project eg.mobileapp, ML")
     description_of_project= models.TextField()
     Challenges_faced= models.TextField()
