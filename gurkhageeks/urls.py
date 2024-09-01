@@ -28,6 +28,7 @@ api_patterns = [
     path('quiz/', include("quiz.urls")),
     path('accounts/', include('userprofile.urls')),
     path('roadmaps/', include('roadmaps.urls')),
+    path('resume/', include('resume.urls'))
 ]
 
 urlpatterns = [
