@@ -55,7 +55,8 @@ INSTALLED_APPS += [
         'quiz',
         'utils',
         'userprofile',
-        'roadmaps'
+        'roadmaps',
+        'resume',
     ]
 
 MIDDLEWARE = [
