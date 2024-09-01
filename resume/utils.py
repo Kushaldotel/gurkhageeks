@@ -6,7 +6,7 @@ import base64
 import os
 import google.generativeai as genai
 
-genai.configure(api_key=os.getenv('AIzaSyBYxZe0kWpomnlqpRsqAn9BvMrNwC1FoGU'))
+genai.configure(api_key=os.getenv('GeminiAPIKey'))
 
 def get_gemini_response(input,pdf_content, prompt):
     model= genai.GenerativeModel('')
