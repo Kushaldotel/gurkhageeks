@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
+from rest_framework.permissions import IsAuthenticated
 User= get_user_model()
 # Create your views here.
 
@@ -12,6 +13,7 @@ User= get_user_model()
 class UserProfileView(ModelViewSet):
     parser_classes= [MultiPartParser]
     http_method_names = ['get', 'patch']
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         # Filter queryset to only include the currently authenticated user

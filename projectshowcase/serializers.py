@@ -10,7 +10,7 @@ class ProjectShowcaseImageSerializer(ModelSerializer):
 
 class ProjectShowcaseSerializer(ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    images = ProjectShowcaseImageSerializer(many=True, required=False)  
+    images = ProjectShowcaseImageSerializer(many=True, read_only=True)  
 
     class Meta:
         model = projectshowcase

@@ -57,6 +57,8 @@ INSTALLED_APPS += [
         'userprofile',
         'roadmaps',
         'resume',
+        'drf_yasg',
+
     ]
 
 MIDDLEWARE = [
@@ -187,3 +189,13 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=20),
     }
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,  # Disable session authentication
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+}
