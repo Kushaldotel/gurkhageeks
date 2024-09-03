@@ -73,7 +73,18 @@ def confirm_registration(request, uidb64, token):
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         return Response(status=="Invalid user")
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 class LoginView(APIView):
+    @swagger_auto_schema(
+        operation_description="User login",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email address'),
+                'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password'),
+            }
+        ),)
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
