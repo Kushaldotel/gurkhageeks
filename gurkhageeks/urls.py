@@ -44,8 +44,8 @@ api_patterns = [
     path('roadmaps/', include('roadmaps.urls')),
     path('resume/', include('resume.urls')),
     # swagger url
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api-documentation/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api-redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 urlpatterns = [
