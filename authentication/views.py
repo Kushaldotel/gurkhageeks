@@ -21,11 +21,18 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
+from rest_framework.viewsets import ModelViewSet
 from .models import TermsandServices
-
+from drf_yasg.utils import swagger_auto_schema
 User=get_user_model()
-class RegisterView(APIView):
-    def post(self, request):
+
+
+class RegisterView(ModelViewSet):
+    parser_classes=[MultiPartParser]
+    @swagger_auto_schema(
+        request_body=UserRegistrationSerializer
+    )
+    def create(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -103,6 +110,14 @@ class LoginView(APIView):
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(APIView):
+    @swagger_auto_schema(operation_description="User logout",
+                         request_body=openapi.Schema(
+                             type= openapi.TYPE_OBJECT,
+                             properties={
+                                 'refresh_token': openapi.Schema(type=openapi.TYPE_STRING, description='Refresh token'),
+                             }
+                         )
+                         )
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
