@@ -26,7 +26,9 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Gurkha Geeks API",
         default_version='v1',
-        description="API documentation of Gurkha Geeks",
+        description="API documentation of Gurkha Geeks \n\n\n\n Instruction:\nTo use authenticate api, first login through login api, \
+        copy the access code from the response then authorize the api with that access code \n \
+            Enter the access code in value field with Bearer at prefix \n\n\n\n Example: Bearer 'access code'",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
