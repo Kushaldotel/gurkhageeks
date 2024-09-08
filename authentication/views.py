@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .serializers import UserRegistrationSerializer, ProfileSerializer, TermsandServicesSerializer
+from .serializers import UserRegistrationSerializer, ProfileSerializer, TermsandServicesSerializer,ForgotPasswordSerializer,ResetPasswordSerializer
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from rest_framework.parsers import MultiPartParser
 from django.contrib.auth.tokens import default_token_generator
@@ -144,3 +144,49 @@ class ProfileView(APIView):
 class TermsandServicesView(ListAPIView):
     queryset= TermsandServices.objects.all()
     serializer_class= TermsandServicesSerializer
+
+class ForgotPassword(ModelViewSet):
+    serializer_class= ForgotPasswordSerializer
+    http_method_names = ['post']
+    
+    def create(self, request, *args, **kwargs):
+        serializer= self.get_serializer(data= request.data)
+
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user= User.objects.get(email=email)
+        except:
+            return Response({"message": "User with this email does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        token= default_token_generator.make_token(user)
+        uid=urlsafe_base64_encode(force_bytes(user.pk))
+        print("uid",uid)
+        print("token",token)
+        if settings.DEBUG:
+            reset_link= f"http://127.0.0.1:8000/auth/reset-password/{uid}/{token}/"
+        else:
+            reset_link= f"https://gorkhageeks-backend.onrender.com/auth/reset-password/{uid}/{token}/"
+
+        subject= "Reset your password"
+        html_message= render_to_string('blog/forgotpassword.html',{'reset_link':reset_link})
+        plain_message= strip_tags(html_message)
+        from_email= settings.EMAIL_HOST_USER
+        send_mail(subject,plain_message,from_email,[email],html_message=html_message)
+
+        return Response({"message": "Password reset email sent"}, status=status.HTTP_200_OK)
+        
+class ResetPasswordView(ModelViewSet):
+    serializer_class= ResetPasswordSerializer
+    http_method_names = ['post']
+
+    def create(self, request, *args, **kwargs):
+        uidb64 = self.kwargs.get('uidb64')
+        token = self.kwargs.get('token')
+        serialier= self.get_serializer(data= request.data, context={'uidb64': uidb64, 'token': token})
+        if serialier.is_valid():
+            serialier.save()
+            return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
+        return Response(serialier.errors, status=status.HTTP_400_BAD_REQUEST)
+    
