@@ -7,13 +7,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0006_alter_postinteraction_disliked'),
+        ("core", "0006_alter_postinteraction_disliked"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='content',
-            field=django_ckeditor_5.fields.CKEditor5Field(verbose_name='Text'),
+            model_name="post",
+            name="content",
+            field=django_ckeditor_5.fields.CKEditor5Field(verbose_name="Text"),
         ),
     ]

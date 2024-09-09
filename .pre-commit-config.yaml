@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace  # Removes trailing whitespace
+      - id: end-of-file-fixer     # Ensures files end with a newline
+      - id: check-added-large-files  # Prevents committing large files
+      - id: debug-statements #Check for debugger imports and py37+ breakpoint() calls in python source.
+        language_version: python3
+  - repo: https://github.com/psf/black
+    rev: 24.8.0  # Version of Black
+    hooks:
+      - id: black  # Automatically formats Python code
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort  # Automatically sorts imports
+        args: ["--profile", "black"]

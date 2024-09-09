@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('projectshowcase', '0002_projectshowcaseimage'),
+        ("projectshowcase", "0002_projectshowcaseimage"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='projectshowcase',
-            name='name',
-            field=models.CharField(max_length=100, verbose_name='name of project'),
+            model_name="projectshowcase",
+            name="name",
+            field=models.CharField(max_length=100, verbose_name="name of project"),
         ),
     ]

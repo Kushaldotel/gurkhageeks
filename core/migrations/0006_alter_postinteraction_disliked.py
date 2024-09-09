@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0005_postinteraction'),
+        ("core", "0005_postinteraction"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='postinteraction',
-            name='disliked',
+            model_name="postinteraction",
+            name="disliked",
             field=models.BooleanField(default=False),
         ),
     ]

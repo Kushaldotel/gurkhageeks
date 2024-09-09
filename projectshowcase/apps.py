@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class ProjectshowcaseConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'projectshowcase'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "projectshowcase"

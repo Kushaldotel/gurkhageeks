@@ -8,23 +8,42 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0003_customuser_user_type'),
+        ("authentication", "0003_customuser_user_type"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Organisation',
+            name="Organisation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('organisation_name', models.CharField(max_length=100)),
-                ('website', models.URLField()),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('phone_number', models.CharField(max_length=20)),
-                ('address', models.TextField()),
-                ('logo', models.ImageField(blank=True, null=True, upload_to='organisation_logo')),
-                ('description', models.TextField()),
-                ('is_verified', models.BooleanField(default=False)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("organisation_name", models.CharField(max_length=100)),
+                ("website", models.URLField()),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                ("phone_number", models.CharField(max_length=20)),
+                ("address", models.TextField()),
+                (
+                    "logo",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="organisation_logo"
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("is_verified", models.BooleanField(default=False)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
