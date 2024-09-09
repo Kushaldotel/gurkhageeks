@@ -72,3 +72,19 @@ class TermsandServices(models.Model):
 
     def __str__(self):
         return "Terms and Services"
+
+class Organisation(models.Model):
+
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    organisation_name = models.CharField(max_length=100)
+    website = models.URLField(max_length=200)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=20)
+    address = models.TextField()
+    logo = models.ImageField(upload_to="organisation_logo", blank=True, null=True)
+    description = models.TextField()
+
+    is_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.organisation_name
