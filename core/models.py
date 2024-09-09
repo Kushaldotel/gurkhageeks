@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django_ckeditor_5.fields import CKEditor5Field
+
 User=get_user_model()
 # Create your models here.
 
@@ -13,7 +15,7 @@ class Categories(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     thumbnail=models.ImageField(upload_to="thumbnail", blank=False, null=True)
-    content = models.TextField() 
+    content=CKEditor5Field('Text', config_name='extends')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Categories, related_name='posts')
     tags = models.CharField(max_length=100,blank=True)
