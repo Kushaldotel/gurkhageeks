@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django_ckeditor_5.fields import CKEditor5Field
+from django.utils.text import slugify
 
 User=get_user_model()
 # Create your models here.
@@ -14,6 +15,7 @@ class Categories(models.Model):
     
 class Post(models.Model):
     title = models.CharField(max_length=200)
+    slug= models.SlugField(max_length=200, unique=True, blank=True, null=True)
     thumbnail=models.ImageField(upload_to="thumbnail", blank=False, null=True)
     content=CKEditor5Field('Text', config_name='extends')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -24,6 +26,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug= slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
+
+
     
 class PostComments(models.Model):
     post= models.ForeignKey(Post, on_delete=models.CASCADE)
