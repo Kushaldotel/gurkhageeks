@@ -17,6 +17,7 @@ class PostsViewset(ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     parser_classes= [MultiPartParser]
+    lookup_field='slug'
 
     def get_queryset(self):
         queryset = Post.objects.all()
