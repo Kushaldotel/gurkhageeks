@@ -1,12 +1,14 @@
 # views.py
+from sys import orig_argv
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .serializers import UserRegistrationSerializer, ProfileSerializer, TermsandServicesSerializer,ForgotPasswordSerializer,ResetPasswordSerializer
+from .serializers import (UserRegistrationSerializer, ProfileSerializer, TermsandServicesSerializer,
+                          ForgotPasswordSerializer,ResetPasswordSerializer,OrganisationRegistrationSerializer)
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -102,8 +104,8 @@ class LoginView(APIView):
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 "email": user.email,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
+                # "first_name": user.first_name,
+                # "last_name": user.last_name,
                 "date_joined": user.date_joined,
                 "is_active": user.is_active,
             })
@@ -148,7 +150,7 @@ class TermsandServicesView(ListAPIView):
 class ForgotPassword(ModelViewSet):
     serializer_class= ForgotPasswordSerializer
     http_method_names = ['post']
-    
+
     def create(self, request, *args, **kwargs):
         serializer= self.get_serializer(data= request.data)
 
@@ -176,7 +178,7 @@ class ForgotPassword(ModelViewSet):
         send_mail(subject,plain_message,from_email,[email],html_message=html_message)
 
         return Response({"message": "Password reset email sent"}, status=status.HTTP_200_OK)
-        
+
 class ResetPasswordView(ModelViewSet):
     serializer_class= ResetPasswordSerializer
     http_method_names = ['post']
@@ -189,4 +191,16 @@ class ResetPasswordView(ModelViewSet):
             serialier.save()
             return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
         return Response(serialier.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+class OrganisationRegistrationView(APIView):
+
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        serializer = OrganisationRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Organization registered successfully. Verification is pending."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
