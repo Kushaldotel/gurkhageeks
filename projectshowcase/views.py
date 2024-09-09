@@ -13,6 +13,7 @@ class ProjectShowcaseView(ModelViewSet):
     serializer_class = ProjectShowcaseSerializer
     http_method_names = ['get', 'post', 'patch', 'delete']
     parser_classes= [MultiPartParser]
+    lookup_field='slug'
 
     def get_permissions(self):
         if self.request.method in ['GET']:
