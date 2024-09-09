@@ -1,18 +1,20 @@
-from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
-from .serializers import UserProfileSerializer,UserUpdateSerailizer
 from django.contrib.auth import get_user_model
+from django.shortcuts import render
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-User= get_user_model()
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+
+from .serializers import UserProfileSerializer, UserUpdateSerailizer
+
+User = get_user_model()
 # Create your views here.
 
 
 class UserProfileView(ModelViewSet):
-    parser_classes= [MultiPartParser]
-    http_method_names = ['get', 'patch']
+    parser_classes = [MultiPartParser]
+    http_method_names = ["get", "patch"]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -22,7 +24,7 @@ class UserProfileView(ModelViewSet):
 
     def get_serializer_class(self):
         # Return different serializers based on HTTP method
-        if self.request.method == 'GET':
+        if self.request.method == "GET":
             return UserProfileSerializer
         return UserUpdateSerailizer
 
@@ -30,9 +32,10 @@ class UserProfileView(ModelViewSet):
 
         user = self.request.user
 
-        serializer = UserUpdateSerailizer(instance=user, data=request.data, partial=True)
+        serializer = UserUpdateSerailizer(
+            instance=user, data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

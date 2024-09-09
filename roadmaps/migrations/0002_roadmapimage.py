@@ -7,19 +7,34 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('roadmaps', '0001_initial'),
+        ("roadmaps", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='RoadmapImage',
+            name="RoadmapImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(null=True, upload_to='roadmap')),
-                ('image_no', models.IntegerField(default=0)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('roadmap', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='roadmaps.roadmap')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("image", models.ImageField(null=True, upload_to="roadmap")),
+                ("image_no", models.IntegerField(default=0)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "roadmap",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="roadmaps.roadmap",
+                    ),
+                ),
             ],
         ),
     ]

@@ -1,35 +1,35 @@
-from rest_framework.permissions import BasePermission
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import BasePermission
 
 
 class IsDeveloper(BasePermission):
 
-    def has_permission(self,request,view):
+    def has_permission(self, request, view):
 
         if not request.user or not request.user.is_authenticated:
             return False
 
-        if request.user.user_type != 'developer':
-            raise PermissionDenied('User is not a developer')
+        if request.user.user_type != "developer":
+            raise PermissionDenied("User is not a developer")
 
 
 class IsOrganization(BasePermission):
 
-    def has_permission(self,request,view):
+    def has_permission(self, request, view):
 
         if not request.user or not request.user.is_authenticated:
             return False
 
-        if request.user.user_type != 'organization':
-            raise PermissionDenied('User is not an organization')
+        if request.user.user_type != "organization":
+            raise PermissionDenied("User is not an organization")
 
 
 class IsStaff(BasePermission):
 
-    def has_permission(self,request,view):
+    def has_permission(self, request, view):
 
         if not request.user or not request.user.is_authenticated:
             return False
 
-        if request.user.user_type != 'staff':
-            raise PermissionDenied('User is not a staff')
+        if request.user.user_type != "staff":
+            raise PermissionDenied("User is not a staff")

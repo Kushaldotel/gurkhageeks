@@ -6,13 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0002_termsandservices'),
+        ("authentication", "0002_termsandservices"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='customuser',
-            name='user_type',
-            field=models.CharField(choices=[('developer', 'developer'), ('organization', 'organization'), ('staff', 'staff')], default='developer', max_length=20),
+            model_name="customuser",
+            name="user_type",
+            field=models.CharField(
+                choices=[
+                    ("developer", "developer"),
+                    ("organization", "organization"),
+                    ("staff", "staff"),
+                ],
+                default="developer",
+                max_length=20,
+            ),
         ),
     ]

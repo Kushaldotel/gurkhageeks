@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contacts', '0001_initial'),
+        ("contacts", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='contactsform',
-            name='date',
+            model_name="contactsform",
+            name="date",
         ),
         migrations.AddField(
-            model_name='contactsform',
-            name='datetime',
+            model_name="contactsform",
+            name="datetime",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

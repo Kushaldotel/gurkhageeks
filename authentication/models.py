@@ -1,14 +1,21 @@
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    Group,
+    Permission,
+    PermissionsMixin,
+)
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import Group, Permission
+from django.db import models
+
 from .constants import USER_TYPE_CHOICES
+
 
 class CustomUserManager(BaseUserManager):
 
     def create_user(self, email, password, **extra_fields):
         if not email:
-            raise ValidationError('Users must have an email address')
+            raise ValidationError("Users must have an email address")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -16,16 +23,16 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_active", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff = True')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser = True')
-        if extra_fields.get('is_active') is not True:
-            raise ValueError('Superuser must have is_active = True')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff = True")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser = True")
+        if extra_fields.get("is_active") is not True:
+            raise ValueError("Superuser must have is_active = True")
 
         return self.create_user(email, password=password, **extra_fields)
 
@@ -38,11 +45,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(max_length=500, blank=True)
     website = models.URLField(max_length=200, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='developer')
+    user_type = models.CharField(
+        max_length=20, choices=USER_TYPE_CHOICES, default="developer"
+    )
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
@@ -53,25 +62,27 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # Adding related_name to avoid conflict with default User model
     groups = models.ManyToManyField(
         Group,
-        related_name='customuser_set',
+        related_name="customuser_set",
         blank=True,
-        help_text='The groups this user belongs to.',
-        verbose_name='groups',
+        help_text="The groups this user belongs to.",
+        verbose_name="groups",
     )
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name='customuser_set',
+        related_name="customuser_set",
         blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
     )
 
+
 class TermsandServices(models.Model):
-    terms= models.TextField()
-    created_at= models.DateTimeField(auto_now_add=True)
+    terms = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "Terms and Services"
+
 
 class Organisation(models.Model):
 
