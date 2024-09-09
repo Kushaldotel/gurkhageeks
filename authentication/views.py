@@ -108,6 +108,7 @@ class LoginView(APIView):
                 # "last_name": user.last_name,
                 "date_joined": user.date_joined,
                 "is_active": user.is_active,
+                "user_type": user.user_type,
             })
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
