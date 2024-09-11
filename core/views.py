@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from .serializers import PostSerializer,PostSerializerread,categorySerializer, CommentSerializer,CommentCreateSerializer,postlikedislike
+from .serializers import (PostSerializer,PostSerializerread,categorySerializer, CommentSerializer,
+                          CommentCreateSerializer,postlikedislike,SubscriberSerializer)
 from .models import Post,Categories,PostComments,Postinteraction
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import APIView
@@ -10,20 +11,20 @@ from rest_framework import status
 from django.db.models import Count
 from django.db import models
 from .utils import start_and_end_days_of_week
-
+from .filters import PostFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 class PostsViewset(ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
-    parser_classes= [MultiPartParser]
-    lookup_field='slug'
+    parser_classes = [MultiPartParser]
+    lookup_field = 'slug'
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PostFilter
 
     def get_queryset(self):
-        queryset = Post.objects.all()
-        categories= self.request.query_params.get('categories', None)
-        if categories is not None:
-            queryset = queryset.filter(categories__id=categories)
+        queryset = super().get_queryset()
         return queryset
 
     def get_serializer_class(self):
@@ -35,7 +36,7 @@ class PostsViewset(ModelViewSet):
         if self.action == 'create':
             return [IsAuthenticated()]
         return super().get_permissions()
-    
+
 class CategoriesView(APIView):
     def get(self,request):
         categories= Categories.objects.all()
@@ -55,14 +56,14 @@ class CategoriesView(APIView):
 class Recentpostsview(ReadOnlyModelViewSet):
     serializer_class = PostSerializerread
     queryset = Post.objects.all().order_by("-created_at")
-        
+
 class Postcomment(APIView):
 
     def get_permissions(self):
         if self.request.method in ['POST', 'PATCH', 'PUT']:
             return [IsAuthenticated()]
         return [AllowAny()]
-    
+
     def get(self, request,pk):
         comments= PostComments.objects.filter(post=pk)
         serializer= CommentSerializer(comments, many=True)
@@ -83,7 +84,7 @@ class Postcomment(APIView):
             serializer.save(author=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def patch(self, request, pk):
         try:
             comment = PostComments.objects.get(pk=pk)
@@ -91,16 +92,16 @@ class Postcomment(APIView):
             return Response({"detail": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
         if comment.author != request.user:
             return Response({"detail": "You do not have permission to edit this comment."}, status=status.HTTP_403_FORBIDDEN)
-        
+
         comment_text = request.data.get("comment")
         data = {
             'comment': comment_text
         }
         serializer = CommentCreateSerializer(comment, data=data, partial=True)
         if serializer.is_valid():
-            serializer.save() 
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -127,7 +128,7 @@ class PostLikeDislikeView(APIView):
         post= Post.objects.get(id=pk)
         post_interaction, created= Postinteraction.objects.get_or_create(post=post, liked_disliked_by=request.user)
         data = request.data
-        
+
         # Validate the input
         if 'liked' not in data and 'disliked' not in data:
             return Response({"error": "No like or dislike value provided."}, status=400)
@@ -138,7 +139,7 @@ class PostLikeDislikeView(APIView):
         elif data.get('disliked') is not None:
             post_interaction.disliked = data['disliked']
             post_interaction.liked = False if data['disliked'] else post_interaction.liked
-        
+
         post_interaction.save()
 
         return Response({"liked": post_interaction.liked, "disliked": post_interaction.disliked})
@@ -163,3 +164,11 @@ class WeekelyPost(APIView):
         serializer= PostSerializer(post, many=True)
         return Response(serializer.data)
 
+class SubscribeAPIView(APIView):
+
+    def post(self, request):
+        serializer = SubscriberSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Thank you for subscribing!'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
