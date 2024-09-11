@@ -12,7 +12,7 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
-    
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug= models.SlugField(max_length=200, unique=True, blank=True, null=True)
@@ -32,7 +32,7 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
 
-    
+
 class PostComments(models.Model):
     post= models.ForeignKey(Post, on_delete=models.CASCADE)
     comment=models.TextField()
@@ -53,4 +53,9 @@ class Postinteraction(models.Model):
         return repr(self.post.title)
 
 
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.email
