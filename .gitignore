@@ -2,6 +2,7 @@
 *.pyc
 __pycache__/
 *.sqlite3
+.DS_Store
 
 # Ignore environment files
 .env
