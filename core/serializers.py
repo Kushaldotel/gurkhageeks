@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post,Categories,PostComments,Postinteraction,CommentReply
+from .models import Post,Categories,PostComments,Postinteraction,CommentReply,Subscriber
 
 User = get_user_model()
 
 class PostSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email']
-class categorySerializer(serializers.ModelSerializer):  
+class categorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Categories
@@ -57,9 +57,20 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 #         model:Postinteraction
 #         fields='__all__'
 
-class postlikedislike(serializers.ModelSerializer):  
+class postlikedislike(serializers.ModelSerializer):
     # post= PostSerializer(read_only=True)
     # author= UserSerializer(read_only=True)
     class Meta:
         model = Postinteraction
         fields = '__all__'
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscriber
+        fields = ['email']
+
+    def validate_email(self,value):
+
+        if Subscriber.objects.filter(email=value).exists():
+            raise serializers.ValidationError("You are already subscribed")
+        return value
