@@ -21,7 +21,11 @@ venv/
 /media/
 /static/
 __pycache__/
+__pycache__/
+*.pyc
 
 
 # Ignore the settings.py
 settings.py
+
+settings.cpython-311.pyc
