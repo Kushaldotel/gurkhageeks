@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post,Categories,PostComments,Postinteraction
+from .models import Post,Categories,PostComments,Postinteraction,CommentReply
 
 User = get_user_model()
 
@@ -29,8 +29,17 @@ class PostSerializerread(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
 
+class CommentReplySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CommentReply
+        fields = '__all__'
+    
+
+
 class CommentSerializer(serializers.ModelSerializer):
     author=UserSerializer(read_only=True)
+    replies = CommentReplySerializer(many=True, read_only=True)  # Include replies in the comment
     class Meta:
         model = PostComments
         fields = '__all__'
