@@ -2,7 +2,7 @@ from django.urls import path,include
 from .views import PostsViewset,CategoriesView,Recentpostsview,PostLikeDislikeView,Mostlikedpost,Latestpostview,WeekelyPost,CommentViewSet
 from rest_framework.routers import DefaultRouter
 router= DefaultRouter()
-router.register('', PostsViewset)
+router.register('', PostsViewset, basename='post-detail')
 
 
 urlpatterns = [
