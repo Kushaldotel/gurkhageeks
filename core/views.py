@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from .serializers import (PostSerializer,PostSerializerread,categorySerializer, CommentSerializer,
-                          CommentCreateSerializer,postlikedislike,SubscriberSerializer,CommentReplySerializer)
-from .models import Post,Categories,PostComments,Postinteraction,CommentReply
+from .serializers import (PostSerializer,PostSerializerread,categorySerializer, 
+                          postlikedislike,SubscriberSerializer,CommentSerializer)
+from .models import Post,Categories,Postinteraction,Comment
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,6 +13,10 @@ from django.db import models
 from .utils import start_and_end_days_of_week
 from .filters import PostFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.exceptions import PermissionDenied,ValidationError
+from django.shortcuts import get_object_or_404
+
+
 
 # Create your views here.
 class PostsViewset(ModelViewSet):
@@ -57,113 +61,168 @@ class Recentpostsview(ReadOnlyModelViewSet):
     serializer_class = PostSerializerread
     queryset = Post.objects.all().order_by("-created_at")
 
-class Postcomment(APIView):
+# class Postcomment(APIView):
+    
+#     def get_permissions(self):
+#         if self.request.method in ['POST', 'PATCH', 'PUT']:
+#             return [IsAuthenticated()]
+#         return [AllowAny()]
+
+#     def get(self, request, pk):
+#         # Fetch all top-level comments (parent=None) for the given post
+#         comments = PostComments.objects.filter(post=pk, parent=None)
+#         serializer = CommentSerializer(comments, many=True)
+#         return Response(serializer.data)
+
+#     def post(self, request, pk):
+#         # Handle posting a new comment or a reply to an existing comment
+#         comment_text = request.data.get("comment")
+#         parent_id = request.data.get("parent")  # ID of the parent comment (if replying to another comment)
+
+#         if not comment_text:
+#             return Response({"detail": "Comment is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+#         post = Post.objects.filter(pk=pk).first()
+#         if not post:
+#             return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
+
+#         # Prepare the data for serialization
+#         data = {
+#             'post': pk,
+#             'comment': comment_text,
+#             'parent': parent_id  # This will be None for top-level comments, or the ID of the parent comment
+#         }
+
+#         serializer = CommentCreateSerializer(data=data)
+#         if serializer.is_valid():
+#             serializer.save(author=request.user)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def patch(self, request, pk):
+#         # Update an existing comment (if the user is the author)
+#         try:
+#             comment = PostComments.objects.get(pk=pk)
+#         except PostComments.DoesNotExist:
+#             return Response({"detail": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
+
+#         if comment.author != request.user:
+#             return Response({"detail": "You do not have permission to edit this comment."}, status=status.HTTP_403_FORBIDDEN)
+
+#         # Update the comment text
+#         comment_text = request.data.get("comment")
+#         data = {
+#             'comment': comment_text
+#         }
+
+#         serializer = CommentCreateSerializer(comment, data=data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class CommentReplyView(APIView):
+    
+#     def get_permissions(self):
+#         if self.request.method in ['POST', 'PATCH', 'DELETE']:
+#             return [IsAuthenticated()]
+#         return [AllowAny()]
+    
+#     def get(self, request, pk):
+#         # pk here is the comment id
+#         replies = CommentReply.objects.filter(comment=pk)
+#         serializer = CommentReplySerializer(replies, many=True)
+#         return Response(serializer.data)
+    
+#     def post(self, request, pk):
+#         reply_text = request.data.get("reply")
+#         if not reply_text:
+#             return Response({"detail": "Reply is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+#         comment = PostComments.objects.filter(pk=pk).first()
+#         if not comment:
+#             return Response({"detail": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
+
+#         data = {
+#             'comment': pk,
+#             'reply': reply_text,
+#             'author': request.user.id
+#         }
+#         serializer = CommentReplySerializer(data=data)
+#         if serializer.is_valid():
+#             reply = serializer.save()
+#             return Response(CommentReplySerializer(reply).data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class CommentReplyDetailView(APIView):
+#     def get_permissions(self):
+#         return [IsAuthenticated()]
+
+#     def patch(self, request, pk):
+#         try:
+#             reply = CommentReply.objects.get(pk=pk)
+#         except CommentReply.DoesNotExist:
+#             return Response({"detail": "Reply not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+#         if reply.author != request.user:
+#             return Response({"detail": "You do not have permission to edit this reply."}, status=status.HTTP_403_FORBIDDEN)
+        
+#         reply_text = request.data.get("reply")
+#         data = {
+#             'reply': reply_text
+#         }
+#         serializer = CommentReplySerializer(reply, data=data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+        
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CommentViewSet(ModelViewSet):
+    serializer_class = CommentSerializer
 
     def get_permissions(self):
-        if self.request.method in ['POST', 'PATCH', 'PUT']:
+        # Require authentication for creating and updating comments
+        if self.request.method in ['POST', 'PATCH']:
             return [IsAuthenticated()]
         return [AllowAny()]
 
-    def get(self, request,pk):
-        comments= PostComments.objects.filter(post=pk)
-        serializer= CommentSerializer(comments, many=True)
-        return Response(serializer.data)
-    def post(self, request, pk):
-        comment_text = request.data.get("comment")
-        if not comment_text:
-            return Response({"detail": "Comment is required."}, status=status.HTTP_400_BAD_REQUEST)
-        post = Post.objects.filter(pk=pk).first()
-        if not post:
-            return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
-        data = {
-            'post': pk,
-            'comment': comment_text
-        }
-        serializer = CommentSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save(author=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        # Filter comments by post_id, so only comments for the specified post are returned
+        post_id = self.kwargs.get('post_id')
+        return Comment.objects.filter(post_id=post_id).order_by('-created_at')
 
-    def patch(self, request, pk):
+    def perform_create(self, serializer):
+        # Get post_id from the URL and associate it with the comment
+        post_id = self.kwargs.get('post_id')
         try:
-            comment = PostComments.objects.get(pk=pk)
-        except PostComments.DoesNotExist:
-            return Response({"detail": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
-        if comment.author != request.user:
-            return Response({"detail": "You do not have permission to edit this comment."}, status=status.HTTP_403_FORBIDDEN)
-
-        comment_text = request.data.get("comment")
-        data = {
-            'comment': comment_text
-        }
-        serializer = CommentCreateSerializer(comment, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CommentReplyView(APIView):
+            post = Post.objects.get(id=post_id)  # Fetch the Post object
+        except Post.DoesNotExist:
+            raise ValidationError("Post not found.")
+        
+        # Save the comment with the current user as author and link it to the post
+        serializer.save(user=self.request.user, post=post)
     
-    def get_permissions(self):
-        if self.request.method in ['POST', 'PATCH', 'DELETE']:
-            return [IsAuthenticated()]
-        return [AllowAny()]
-    
-    def get(self, request, pk):
-        # pk here is the comment id
-        replies = CommentReply.objects.filter(comment=pk)
-        serializer = CommentReplySerializer(replies, many=True)
+    def partial_update(self, request, *args, **kwargs):
+        # Get the comment by pk
+        comment = get_object_or_404(Comment, pk=kwargs['pk'])
+        
+        # Check permission: only allow updates by the comment author
+        if comment.user != self.request.user:
+            raise PermissionDenied("You do not have permission to edit this comment.")
+        
+        # Perform partial update
+        partial = kwargs.pop('partial', True)
+        serializer = self.get_serializer(comment, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        
         return Response(serializer.data)
+
     
-    def post(self, request, pk):
-        reply_text = request.data.get("reply")
-        if not reply_text:
-            return Response({"detail": "Reply is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        comment = PostComments.objects.filter(pk=pk).first()
-        if not comment:
-            return Response({"detail": "Comment not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        data = {
-            'comment': pk,
-            'reply': reply_text,
-            'author': request.user.id
-        }
-        serializer = CommentReplySerializer(data=data)
-        if serializer.is_valid():
-            reply = serializer.save()
-            return Response(CommentReplySerializer(reply).data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CommentReplyDetailView(APIView):
-    def get_permissions(self):
-        return [IsAuthenticated()]
-
-    def patch(self, request, pk):
-        try:
-            reply = CommentReply.objects.get(pk=pk)
-        except CommentReply.DoesNotExist:
-            return Response({"detail": "Reply not found."}, status=status.HTTP_404_NOT_FOUND)
-        
-        if reply.author != request.user:
-            return Response({"detail": "You do not have permission to edit this reply."}, status=status.HTTP_403_FORBIDDEN)
-        
-        reply_text = request.data.get("reply")
-        data = {
-            'reply': reply_text
-        }
-        serializer = CommentReplySerializer(reply, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 class PostLikeDislikeView(APIView):
 
