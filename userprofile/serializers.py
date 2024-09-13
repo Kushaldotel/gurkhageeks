@@ -30,7 +30,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
                 'title': blog['title'],
                 'thumbnail': blog['thumbnail'],
                 'created_at': blog['created_at'],
-                'url': request.build_absolute_uri(reverse('post-detail', kwargs={'pk': blog['id']}))  # Adjust 'post-detail' to your actual URL name
+                # 'url': request.build_absolute_uri(reverse('post-detail-detail', kwargs={'pk': blog['id']}))  # Adjust URL name to 'post-detail-detail'
             }
             for blog in blogs
         ]
@@ -52,7 +52,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
                 'name': showcase.name,
                 'created_at': showcase.created_at,
                 'thumbnail': thumbnail_url,
-                'url': request.build_absolute_uri(reverse('projectshowcase-detail', kwargs={'pk': showcase.id}))  # Adjust 'projectshowcase-detail' to your actual URL name
+                # 'url': request.build_absolute_uri(reverse('projectshowcase-detail', kwargs={'pk': showcase.id}))  # Adjust 'projectshowcase-detail' to your actual URL name
             })
         return project_showcase_list
 
