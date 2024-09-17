@@ -40,6 +40,11 @@ class PostsViewset(ModelViewSet):
         if self.action == 'create':
             return [IsAuthenticated()]
         return super().get_permissions()
+    def perform_create(self, serializer):
+        author= self.request.user
+        serializer.save(author=author)
+        return super().perform_create(serializer)
+  
 
 class CategoriesView(APIView):
     def get(self,request):
