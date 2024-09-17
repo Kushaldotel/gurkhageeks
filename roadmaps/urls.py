@@ -3,5 +3,5 @@ from .views import RoadmapListView, RoadmapDetailView
 
 urlpatterns = [
     path('list/', RoadmapListView.as_view(), name='roadmap-list'),
-    path('<int:pk>/', RoadmapDetailView.as_view(), name='roadmap-detail'),
+    path('<slug:slug>/', RoadmapDetailView.as_view(), name='roadmap-detail'),
 ]

@@ -12,4 +12,4 @@ class RoadmapSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Roadmap
-        fields = ['title', 'description', 'steps', 'resource_url', 'images']
+        fields = ['slug','title', 'description', 'steps', 'resource_url', 'images']

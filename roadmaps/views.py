@@ -17,3 +17,4 @@ class RoadmapListView(ListAPIView):
 class RoadmapDetailView(RetrieveAPIView):
     queryset = Roadmap.objects.all()
     serializer_class = RoadmapSerializer
+    lookup_field = 'slug'

@@ -9,14 +9,14 @@ class RoadmapImageInline(admin.TabularInline):
     show_change_link = True
 
 class RoadmapAdmin(admin.ModelAdmin):
-    list_display = ['title', 'description', 'created_at', 'updated_at']
+    list_display = ['title', 'description', 'slug','created_at', 'updated_at']
     search_fields = ['title', 'description']
     list_filter = ['created_at', 'updated_at']
     inlines = [RoadmapImageInline]  # Inline for RoadmapImage
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'description', 'steps', 'resource_url')
+            'fields': ('title', 'description', 'slug','steps', 'resource_url')
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
