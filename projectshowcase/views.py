@@ -20,6 +20,5 @@ class ProjectShowcaseView(ModelViewSet):
             return [AllowAny()]
         else:
             return [IsAuthenticated()]
-   
 
-    
+
