@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
 from .serializers import (PostSerializer,PostSerializerread,categorySerializer, 
-                          postlikedislike,SubscriberSerializer,CommentSerializer)
-from .models import Post,Categories,Postinteraction,Comment
+                          postlikedislike,SubscriberSerializer,CommentSerializer,FollowSerializer)
+from .models import Post,Categories,Postinteraction,Comment,follow
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,6 +15,8 @@ from .filters import PostFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import PermissionDenied,ValidationError
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+User= get_user_model()
 
 
 
@@ -296,3 +298,27 @@ class SubscribeAPIView(APIView):
             serializer.save()
             return Response({'message': 'Thank you for subscribing!'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class FollowViewset(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
+
+    def list(self, request, *args, **kwargs):
+        user= request.user
+        following= follow.objects.filter(follower=user)
+        serializer= FollowSerializer(following, many=True)
+        return Response(serializer.data)
+    
+    def create(self, request, *args, **kwargs):
+        user= request.user
+        following= self.kwargs.get('following')
+        following_user= User.objects.get(id=following)
+        follow_instance= follow.objects.create(follower=user, following=following_user)
+           
+        serializer= FollowSerializer(follow_instance)
+        return Response(serializer.data)
+    
+    def destroy(self, request, *args, **kwargs):
+        following= self.kwargs.get('following')
+        follow.objects.filter(follower=request.user, following=following).delete()
+        return Response({"message": "Unfollowed successfully"})
