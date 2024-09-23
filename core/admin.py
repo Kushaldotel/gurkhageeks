@@ -10,8 +10,7 @@
 # admin.py
 # admin.py
 from django.contrib import admin
-from .models import Post, Categories, Postinteraction
-
+from .models import Post, Categories, Postinteraction, follow
 
 
 # class PostCommentsInline(admin.TabularInline):
@@ -33,6 +32,7 @@ class PostAdmin(admin.ModelAdmin):
     
 
 admin.site.register(Post, PostAdmin)
+admin.site.register(follow)
 # admin.site.register(Categories)
 # admin.site.register(PostComments)
 # admin.site.register(CommentReply)
