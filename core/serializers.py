@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post,Categories,Postinteraction,Subscriber,Comment
+from .models import Post,Categories,Postinteraction,Subscriber,Comment,follow
 
 User = get_user_model()
 
@@ -81,3 +81,9 @@ class SubscriberSerializer(serializers.ModelSerializer):
         if Subscriber.objects.filter(email=value).exists():
             raise serializers.ValidationError("You are already subscribed")
         return value
+    
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = follow
+        fields=['follower','following','created_at']
+        read_only_fields=['created_at']

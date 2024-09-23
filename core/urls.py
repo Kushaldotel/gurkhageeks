@@ -1,5 +1,6 @@
 from django.urls import path,include
-from .views import PostsViewset,CategoriesView,Recentpostsview,PostLikeDislikeView,Mostlikedpost,Latestpostview,WeekelyPost,CommentViewSet
+from .views import (PostsViewset,CategoriesView,Recentpostsview,PostLikeDislikeView,Mostlikedpost,Latestpostview,WeekelyPost,CommentViewSet
+                    ,FollowViewset)
 from rest_framework.routers import DefaultRouter
 router= DefaultRouter()
 router.register('', PostsViewset, basename='post-detail')
@@ -24,7 +25,8 @@ urlpatterns = [
 
     path('posts/<int:post_id>/comments/', CommentViewSet.as_view({'post': 'create', 'get': 'list'})),  # Create and list comments
     path('comments/<int:pk>/', CommentViewSet.as_view({'patch': 'partial_update', 'delete': 'destroy'})),  # Update and delete comments
-
+    path('follow/<int:following>/', FollowViewset.as_view({'post': 'create','delete': 'destroy'}), name='followunfollow'),
+    path('followers/', FollowViewset.as_view({'get': 'list'}), name='followers'),
 
     path('', include(router.urls)),
 ]
