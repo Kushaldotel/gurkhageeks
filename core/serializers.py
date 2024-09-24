@@ -39,11 +39,11 @@ class PostSerializerread(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     replies = serializers.SerializerMethodField()
-
+    user=UserSerializer(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id','content', 'parent', 'replies', 'created_at']
+        fields = ['id','user','content', 'parent', 'replies', 'created_at']
 
     def get_replies(self, obj):
         # Retrieve the replies related to the current comment
