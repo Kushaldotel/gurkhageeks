@@ -26,6 +26,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from .models import TermsandServices
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework_simplejwt.exceptions import TokenError,InvalidToken
 User=get_user_model()
 
 
@@ -205,3 +206,19 @@ class OrganisationRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RefreshTokenView(APIView):
+
+    def post(self, request):
+       try:
+            refresh_token= request.data.get('refresh_token')
+            if not refresh_token:
+                return Response({"error": "Refresh token not provided"}, status=status.HTTP_400_BAD_REQUEST)
+            token= RefreshToken(refresh_token)
+            access_token= str(token.access_token)
+            return Response({"access_token": access_token}, status=status.HTTP_200_OK)  
+       except (TokenError, InvalidToken) as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+       except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+       
