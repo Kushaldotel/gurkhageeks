@@ -1,7 +1,7 @@
 # urls.py
 from django.urls import path,include
 from .views import (RegisterView, LoginView, LogoutView,confirm_registration,
-                    ProfileView,TermsandServicesView, ForgotPassword, ResetPasswordView,OrganisationRegistrationView)
+                    ProfileView,TermsandServicesView, ForgotPassword, ResetPasswordView,OrganisationRegistrationView,RefreshTokenView)
 
 urlpatterns = [
     path('register/', RegisterView.as_view({'post': 'create'}), name='register'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path("profile/",ProfileView.as_view(),name="profile"),
     path('forgot-password',ForgotPassword.as_view({'post': 'create'}),name='forgot_password'),
     path('reset-password/<str:uidb64>/<str:token>/',ResetPasswordView.as_view({'post': 'create'}),name='reset_password'),
+    path('token/refresh/', RefreshTokenView.as_view(), name='token_refresh'),
     path('', include('sociallogin.urls'))
 
 ]
