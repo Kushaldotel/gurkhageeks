@@ -216,7 +216,7 @@ class RefreshTokenView(APIView):
             token= RefreshToken(refresh_token)
             access_token= str(token.access_token)
             return Response({"access_token": access_token}, status=status.HTTP_200_OK)  
-       except (TokenError, InvalidToken) as e:
+       except (TokenError, InvalidToken) as e: #to check token validation
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
        except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
