@@ -301,6 +301,7 @@ class SubscribeAPIView(APIView):
     
 class FollowViewset(ModelViewSet):
     permission_classes = [IsAuthenticated]
+    serializer_class = FollowSerializer
 
 
     def list(self, request, *args, **kwargs):
