@@ -1,7 +1,8 @@
 # urls.py
 from django.urls import path,include
 from .views import (RegisterView, LoginView, LogoutView,confirm_registration,
-                    ProfileView,TermsandServicesView, ForgotPassword, ResetPasswordView,OrganisationRegistrationView,RefreshTokenView)
+                    ProfileView,TermsandServicesView, ForgotPassword, ResetPasswordView,OrganisationRegistrationView,
+                    RefreshTokenView)
 
 urlpatterns = [
     path('register/', RegisterView.as_view({'post': 'create'}), name='register'),
